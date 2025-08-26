@@ -31,7 +31,6 @@ func main() {
 			defer c.Close()
 			// Handle the connection here, e.g., read/write loop
 			// ...
-			conn.Write([]byte("+PONG\r\n"))
 			resp, err := conn.Write([]byte("+PONG\r\n"))
 
 			if err != nil {
