@@ -35,7 +35,7 @@ func main() {
 
 			if err != nil {
 				fmt.Println("Error sending response", err.Error())
-				os.Exit(1)
+				continue
 			}
 
 			fmt.Println(resp)
