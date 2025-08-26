@@ -15,40 +15,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	// conn, err := l.Accept()
-	// if err != nil {
-	// 	fmt.Println("Error accepting connection: ", err.Error())
-	// 	os.Exit(1)
-	// }
-
 	defer l.Close()
-
-	// for {
-	// 	conn, err := l.Accept()
-	// 	if err != nil {
-	// 		fmt.Println("Error accepting connection:", err.Error())
-	// 		continue // handle next connection
-	// 	}
-	// 	go func(c net.Conn) {
-	// 		defer c.Close()
-	// 		// Handle the connection here, e.g., read/write loop
-	// 		// ...
-	// 		resp, err := conn.Write([]byte("+PONG\r\n"))
-	//
-	// 		if err != nil {
-	// 			fmt.Println("Error sending response", err.Error())
-	// 		}
-	//
-	// 		fmt.Println(resp)
-	// 	}(conn)
-	// }
 
 	conn, err := l.Accept()
 	if err != nil {
 		fmt.Println("Error accepting connection:", err.Error())
 	}
 	for {
-		netData, err := bufio.NewReader(conn).ReadString('\n')
+		_, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
 			if err == io.EOF {
 				break // client closed connection
@@ -56,8 +30,6 @@ func main() {
 			// handle error, possibly break
 			break
 		}
-
-		fmt.Println("Received:", netData) // Use netData
 
 		// process netData, e.g., parse PING
 		response := "+PONG\r\n"
