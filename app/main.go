@@ -35,7 +35,6 @@ func main() {
 
 			if err != nil {
 				fmt.Println("Error sending response", err.Error())
-				continue
 			}
 
 			fmt.Println(resp)
