@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"net"
 	"os"
 )
@@ -21,24 +23,49 @@ func main() {
 
 	defer l.Close()
 
+	// for {
+	// 	conn, err := l.Accept()
+	// 	if err != nil {
+	// 		fmt.Println("Error accepting connection:", err.Error())
+	// 		continue // handle next connection
+	// 	}
+	// 	go func(c net.Conn) {
+	// 		defer c.Close()
+	// 		// Handle the connection here, e.g., read/write loop
+	// 		// ...
+	// 		resp, err := conn.Write([]byte("+PONG\r\n"))
+	//
+	// 		if err != nil {
+	// 			fmt.Println("Error sending response", err.Error())
+	// 		}
+	//
+	// 		fmt.Println(resp)
+	// 	}(conn)
+	// }
+
+	conn, err := l.Accept()
+	if err != nil {
+		fmt.Println("Error accepting connection:", err.Error())
+	}
 	for {
-		conn, err := l.Accept()
+		netData, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
-			fmt.Println("Error accepting connection:", err.Error())
-			continue // handle next connection
-		}
-		go func(c net.Conn) {
-			defer c.Close()
-			// Handle the connection here, e.g., read/write loop
-			// ...
-			resp, err := conn.Write([]byte("+PONG\r\n"))
-
-			if err != nil {
-				fmt.Println("Error sending response", err.Error())
+			if err == io.EOF {
+				break // client closed connection
 			}
+			// handle error, possibly break
+			break
+		}
 
-			fmt.Println(resp)
-		}(conn)
+		fmt.Println("Received:", netData) // Use netData
+
+		// process netData, e.g., parse PING
+		response := "+PONG\r\n"
+		_, err = conn.Write([]byte(response))
+		if err != nil {
+			// error writing back, likely connection closed
+			break
+		}
 	}
 
 }
