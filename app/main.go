@@ -31,7 +31,7 @@ func main() {
 			break
 		}
 
-		// process netData, e.g., parse PING
+		// parse PING later on
 		response := "+PONG\r\n"
 		_, err = conn.Write([]byte(response))
 		if err != nil {
