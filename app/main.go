@@ -25,6 +25,7 @@ func main() {
 		_, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
 			if err == io.EOF {
+				// TODO: Add logging message here
 				break // client closed connection
 			}
 			// handle error, possibly break
